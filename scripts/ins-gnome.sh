@@ -1,5 +1,13 @@
-#/bin/bash
-
+#!/bin/bash
+# Ejecutar loadkeys es
+# Seleccionar, identificar y crear las tablas de particiones con cfdisk
+mkfs.ext4 /dev/sdb2
+mkswap /dev/sdb1
+mount /dev/sdb2 /mnt
+swapon /dev/sdb1
+pacstrap /mnt base base-devel linux linux-firmware nano git ntfs-3g grub-bios os-prober
+genfstab -p /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
 echo "LANG=es_AR.UTF-8" >> /etc/locale.conf
 echo "KEYMAP=es" >> /etc/vconsole.conf
 echo "midna" >> /etc/hostname
