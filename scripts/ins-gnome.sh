@@ -13,7 +13,7 @@ mkinitcpio -p linux
 useradd -m -g users -G wheel,audio,lp,optical,storage,video,games,power,scanner -s /bin/bash cesc
 usermod -c "Cesc" cesc
 passwd cesc
-pacman -S xorg xorg-fonts-misc ttf-font-awesome adobe-source-code-pro-fonts zsh zsh-completions nvidia nvidia-settings nvidia-utils gnome gnome-extra
+pacman -S xorg xorg-fonts-misc ttf-font-awesome adobe-source-code-pro-fonts zsh zsh-completions nvidia nvidia-settings nvidia-utils networkmanager gnome gnome-extra
 sudo nvidia-xconfig
 sudo systemctl enable gdm
 sudo systemctl enable NetworkManager
