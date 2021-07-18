@@ -16,7 +16,7 @@ usermod -c "kio" kio
 usermod -c "Cesc" cesc
 passwd kio
 passwd cesc
-pacman -S xorg xorg-fonts-misc ttf-font-awesome adobe-source-code-pro-fonts sddm zsh zsh-completions nvidia nvidia-settings nvidia-utils networkmanager plasma
+pacman -S xorg xorg-fonts-misc ttf-font-awesome adobe-source-code-pro-fonts sddm zsh zsh-completions nvidia nvidia-settings nvidia-utils networkmanager plasma konsole kate dolphin
 sudo nvidia-xconfig
 sudo systemctl enable sddm
 sudo systemctl enable NetworkManager
