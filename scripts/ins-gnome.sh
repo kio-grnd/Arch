@@ -14,7 +14,7 @@ useradd -m -g users -G wheel,audio,lp,optical,storage,video,games,power,scanner 
 usermod -c "Cesc" cesc
 passwd cesc
 pacman -S xorg xorg-fonts-misc ttf-font-awesome adobe-source-code-pro-fonts zsh zsh-completions nvidia nvidia-settings nvidia-utils gnome gnome-extra
-nvidia-xconfig
-systemctl enable gdm
-systemctl enable NetworkManager
+sudo nvidia-xconfig
+sudo systemctl enable gdm
+sudo systemctl enable NetworkManager
 passwd
