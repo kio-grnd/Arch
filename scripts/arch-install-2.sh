@@ -138,11 +138,6 @@ chmod +x /home/$USERNAME/.xinitrc
 chown $USERNAME:$USERNAME /home/$USERNAME/.xinitrc
 
 # -----------------------------
-# Configuración de Zsh como shell predeterminada
-# -----------------------------
-chsh -s /bin/zsh $USERNAME
-
-# -----------------------------
 # Copiar dotfiles a la carpeta home
 # -----------------------------
 echo "Clonando dotfiles desde GitHub..."
@@ -150,10 +145,19 @@ git clone https://github.com/vetealdiablo/gentoo.git /tmp/gentoo
 
 echo "Copiando dotfiles a /home/$USERNAME..."
 cp -r /tmp/gentoo/dotfiles/.* /home/$USERNAME/
+
+# Cambiar el propietario de los archivos copiados al usuario correspondiente
 chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
+# Cambiar los permisos de los archivos copiados
+chmod -R u+rwX /home/$USERNAME/.*
 
 # Limpiar
 rm -rf /tmp/gentoo
+
+# -----------------------------
+# Configuración de Zsh como shell predeterminada
+# -----------------------------
+# chsh -s /bin/zsh $USERNAME
 
 # -----------------------------
 # Finalización
