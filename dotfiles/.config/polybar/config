@@ -74,8 +74,8 @@ font-4 = Unifont:fontformat=truetype:size=13;2
 
 [module/launcher]
 type = custom/text
-content = 
-content-foreground = #CCCCFF
+content = 󰣇
+content-foreground = #0F94D1
 click-left = rofi -show drun -show-icons
 
 
@@ -177,12 +177,12 @@ warn-temperature = 70
 format = <ramp> <label>
 format-warn = <ramp> <label-warn>
 format-padding = 0
-label-foreground = ${xrdb:color12}
+label-foreground = #08c
 label = %temperature%
 label-warn = %temperature%
 ramp-0 =  "󰜗" 
 ramp-font = 3
-ramp-foreground =${xrdb:color12}
+ramp-foreground =#08c
 
 
 [module/cpu]
@@ -192,7 +192,7 @@ format-prefix =" "
 format =  <label> 
 label = CPU %percentage%%
 label-padding = 0
-format-foreground = ${xrdb:color12}
+format-foreground = #08c
 
 
 [module/disk]
@@ -200,7 +200,7 @@ type = custom/script
 exec = df -h / --output=avail,size | awk 'NR==2 {print $1 "/" $2}'
 format = <label>
 label = 󰋊 %output%
-label-foreground = ${xrdb:color12}
+label-foreground = #08c
 label-padding = 1
 
 [module/mem]
@@ -209,7 +209,7 @@ exec = free -m | sed -n 's/^Mem:\s\+\([0-9]\+\)\s\+\([0-9]\+\)\s.*/\2/p'
 format = <label>
 label =󰳡 %output%M
 label-padding = 0
-label-foreground = ${xrdb:color12}
+label-foreground = #08c
 
 [module/powermenu]
 type = custom/text 
@@ -224,7 +224,7 @@ exec = amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]'
 format = <label>
 internal = 5.0
 label =  %output% 
-label-foreground = #BF616A
+label-foreground = #0F94D1
 label-padding = 1
 
 
@@ -245,7 +245,7 @@ label = %date%%time%
 
 [module/nombre]
 type = custom/text
-content = "Gentoo "
+content = "Arch "
 click-left = st
 format-foreground = #fff
 
