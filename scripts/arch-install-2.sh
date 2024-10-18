@@ -28,7 +28,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 # Instalación de GRUB, os-prober y el controlador NVIDIA
 # -----------------------------
 pacman -S grub efibootmgr os-prober --noconfirm
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -131,6 +131,19 @@ chown $USERNAME:$USERNAME /home/$USERNAME/.xinitrc
 # Configuración de Zsh como shell predeterminada
 # -----------------------------
 chsh -s /bin/zsh $USERNAME
+
+# -----------------------------
+# Copiar dotfiles a la carpeta home
+# -----------------------------
+echo "Clonando dotfiles desde GitHub..."
+git clone https://github.com/vetealdiablo/gentoo.git /tmp/gentoo
+
+echo "Copiando dotfiles a /home/$USERNAME..."
+cp -r /tmp/gentoo/dotfiles/.* /home/$USERNAME/
+chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
+
+# Limpiar
+rm -rf /tmp/gentoo
 
 # -----------------------------
 # Finalización
