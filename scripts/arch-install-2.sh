@@ -25,10 +25,20 @@ passwd $USERNAME
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 # -----------------------------
-# Instalación de GRUB, os-prober y el controlador NVIDIA
+# Mostrar discos disponibles
 # -----------------------------
-pacman -S grub efibootmgr os-prober --noconfirm
-# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+echo "Discos disponibles:"
+lsblk
+
+# -----------------------------
+# Elegir donde instalar GRUB
+# -----------------------------
+read -p "Introduce el dispositivo donde instalar GRUB (ejemplo: /dev/sda): " DISCO
+
+# Instalación de GRUB y os-prober
+pacman -S grub os-prober --noconfirm
+# Instalar GRUB en el MBR
+grub-install --target=i386-pc $DISCO
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
