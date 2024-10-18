@@ -135,5 +135,6 @@ chsh -s /bin/zsh $USERNAME
 # -----------------------------
 # Finalización
 # -----------------------------
+echo -e "\e[32mEl script ha finalizado correctamente.\e[0m"
 umount -R /mnt
 reboot
