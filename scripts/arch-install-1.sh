@@ -5,8 +5,6 @@
 # -----------------------------
 # read -p "Introduce el nombre del disco (ejemplo: /dev/sda): " DISK
 # read -p "Introduce el tamaño de la partición swap (ejemplo: 2G): " SWAPSIZE
-read -p "Introduce el nombre del host: " HOSTNAME
-read -p "Introduce tu nombre de usuario: " USERNAME
 
 # -----------------------------
 # Particionamiento
