@@ -27,6 +27,27 @@ alias que_hora_es='~/.local/bin/hora.sh'
 # Alias para limpiar espacio en disco
 alias espacio='~/.local/bin/espacio_disco.sh'
 
-# Alias para mantenimiento de Gentoo
-alias gen='~/.local/bin/mantenimiento_gentoo.sh'
+# Alias para pkg de FreeBSD
+alias pkg='sudo pacman'
+
+# Actualizar los repositorios y los paquetes instalados
+alias pkg-update='sudo pacman -Syu'
+
+# Instalar un paquete
+alias pkg-install='sudo pacman -S'
+
+# Desinstalar un paquete
+alias pkg-remove='sudo pacman -R'
+
+# Buscar un paquete
+alias pkg-search='pacman -Ss'
+
+# Mostrar información sobre un paquete
+alias pkg-info='pacman -Qi'
+
+# Limpiar paquetes no necesarios
+alias pkg-clean='sudo pacman -Rns $(pacman -Qdtq)'
+
+# Listar paquetes instalados
+alias pkg-list='pacman -Q'
 
