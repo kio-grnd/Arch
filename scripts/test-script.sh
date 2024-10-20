@@ -3,8 +3,8 @@
 # -----------------------------
 # Variables generales del script
 # -----------------------------
-read -p "Introduce el nombre del host: " HOSTNAME
-read -p "Introduce tu nombre de usuario: " USERNAME
+# read -p "Introduce el nombre del host: " HOSTNAME
+# read -p "Introduce tu nombre de usuario: " USERNAME
 
 # -----------------------------
 # Particionamiento
