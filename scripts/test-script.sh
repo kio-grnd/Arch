@@ -3,8 +3,8 @@
 # -----------------------------
 # Variables generales del script
 # -----------------------------
-# read -p "Introduce el nombre del host: " HOSTNAME
-# read -p "Introduce tu nombre de usuario: " USERNAME
+read -p "Introduce el nombre del host: " HOSTNAME
+read -p "Introduce tu nombre de usuario: " USERNAME
 
 # -----------------------------
 # Particionamiento
@@ -21,7 +21,7 @@ read -p "Introduce la partición swap (ejemplo: /dev/sda2): " SWAP_PARTITION
 # -----------------------------
 # Instalación base del sistema
 # -----------------------------
-pacstrap /mnt base linux linux-firmware vim nano
+pacstrap /mnt base linux linux-firmware vim nano git
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -31,19 +31,30 @@ genfstab -U /mnt >> /mnt/etc/fstab
 echo "Instalación base completada. Ahora ejecutando 'arch-chroot /mnt'."
 
 # Crear un archivo de configuración temporal
-cat << EOF > /mnt/setup_choice.txt
+cat << EOF > /mnt/setup_choice.sh
+#!/bin/bash
+# Clonar el repositorio solo una vez
+echo "Clonando el repositorio..."
+git clone https://github.com/vetealdiablo/Arch /tmp/arch-scripts
+
 # Elegir entorno de escritorio
 echo -e "\n¿Qué entorno de escritorio deseas instalar?"
 select option in "i3" "bspwm" "Salir"; do
     case \$option in
         i3)
             echo "Ejecutando script de instalación de i3..."
-            bash /path/to/arch-install-2-i3.sh
+            bash /tmp/arch-scripts/scripts/arch-install-2-i3.sh
+            echo "Copiando dotfiles de i3..."
+            cp -r /tmp/arch-scripts/i3 /home/$USERNAME/.config/i3
+            chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/i3
             break
             ;;
         bspwm)
             echo "Ejecutando script de instalación de bspwm..."
-            bash /path/to/arch-install-2-bspwm.sh
+            bash /tmp/arch-scripts/scripts/arch-install-2-bspwm.sh
+            echo "Copiando dotfiles de bspwm..."
+            cp -r /tmp/arch-scripts/dotfiles /home/$USERNAME/.config/bspwm
+            chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/bspwm
             break
             ;;
         Salir)
@@ -57,10 +68,13 @@ select option in "i3" "bspwm" "Salir"; do
 done
 EOF
 
-# Ejecutar chroot y leer el archivo de configuración
-arch-chroot /mnt /bin/bash /setup_choice.txt
+# Hacer el archivo ejecutable
+chmod +x /mnt/setup_choice.sh
+
+# Ejecutar chroot y ejecutar el archivo de configuración
+arch-chroot /mnt /bin/bash /setup_choice.sh
 
 # Limpiar
-rm /mnt/setup_choice.txt
+rm /mnt/setup_choice.sh
 
 echo "Finalización de la instalación."
