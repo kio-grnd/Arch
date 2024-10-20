@@ -31,18 +31,6 @@ echo "Discos disponibles:"
 lsblk
 
 # -----------------------------
-# Elegir donde instalar GRUB
-# -----------------------------
-read -p "Introduce el dispositivo donde instalar GRUB (ejemplo: /dev/sda): " DISCO
-
-# Instalación de GRUB y os-prober
-pacman -S grub os-prober --noconfirm
-# Instalar GRUB en el MBR
-grub-install --target=i386-pc $DISCO
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-grub-mkconfig -o /boot/grub/grub.cfg
-
-# -----------------------------
 # Instalación de controladores NVIDIA
 # -----------------------------
 pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
@@ -157,6 +145,44 @@ rm -rf /tmp/arch
 # Configuración de Zsh como shell predeterminada
 # -----------------------------
 # chsh -s /bin/zsh $USERNAME
+
+# -----------------------------
+# Elegir donde instalar GRUB
+# -----------------------------
+read -p "Introduce el dispositivo donde instalar GRUB (ejemplo: /dev/sda): " DISCO
+
+# Validar que el dispositivo sea correcto
+if [[ ! -b $DISCO ]]; then
+    echo -e "\e[31mError: El dispositivo $DISCO no es válido.\e[0m"
+    exit 1
+fi
+
+# Instalación de GRUB y os-prober
+echo -e "\e[34mInstalando GRUB y os-prober...\e[0m"
+pacman -S grub os-prober --noconfirm
+if [[ $? -ne 0 ]]; then
+    echo -e "\e[31mError: La instalación de GRUB y os-prober ha fallado.\e[0m"
+    exit 1
+fi
+
+# Instalar GRUB en el MBR
+echo -e "\e[34mInstalando GRUB en $DISCO...\e[0m"
+grub-install --target=i386-pc "$DISCO"
+if [[ $? -ne 0 ]]; then
+    echo -e "\e[31mError: La instalación de GRUB ha fallado.\e[0m"
+    exit 1
+fi
+
+# Habilitar os-prober
+echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
+
+# Generar el archivo de configuración de GRUB
+echo -e "\e[34mGenerando el archivo de configuración de GRUB...\e[0m"
+grub-mkconfig -o /boot/grub/grub.cfg
+if [[ $? -ne 0 ]]; then
+    echo -e "\e[31mError: La generación del archivo de configuración de GRUB ha fallado.\e[0m"
+    exit 1
+fi
 
 # -----------------------------
 # Finalización
