@@ -146,6 +146,8 @@ rm -rf /tmp/arch
 # -----------------------------
 # chsh -s /bin/zsh $USERNAME
 
+#!/bin/bash
+
 # -----------------------------
 # Elegir donde instalar GRUB
 # -----------------------------
@@ -165,15 +167,15 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-# Instalar GRUB en el MBR
+# Instalar GRUB en el dispositivo (disco completo, no una partición)
 echo -e "\e[34mInstalando GRUB en $DISCO...\e[0m"
-grub-install --target=i386-pc "$DISCO"
+grub-install "$DISCO"
 if [[ $? -ne 0 ]]; then
     echo -e "\e[31mError: La instalación de GRUB ha fallado.\e[0m"
     exit 1
 fi
 
-# Habilitar os-prober
+# Habilitar os-prober para detectar otros sistemas operativos
 echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
 
 # Generar el archivo de configuración de GRUB
