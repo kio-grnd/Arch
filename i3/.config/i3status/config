@@ -1,0 +1,40 @@
+general {
+    colors = true
+    interval = 1
+}
+
+# Orden de los módulos
+order += "disk /"
+order += "volume master"
+order += "load"
+order += "memory"
+order += "time"
+
+# Módulo de disco (espacio libre en la partición raíz /)
+disk "/" {
+    format = "Disk: %free free"
+}
+
+
+# Módulo de volumen (volumen del sistema)
+volume master {
+    device = "default"
+    format = "♪ %volume%%"
+    format_muted = "Muted"
+    mixer = "Master"
+}
+
+# Módulo de carga del sistema (promedio de carga en 1 minuto)
+load {
+    format = "Load: %1min"
+}
+
+# Módulo de memoria (memoria usada y total)
+memory {
+    format = "Memory: %used/%total"
+}
+
+# Módulo de tiempo (fecha y hora actual)
+time {
+    format = "%Y-%m-%d %H:%M:%S"
+}
