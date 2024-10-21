@@ -1,0 +1,41 @@
+URxvt*foreground: lightgrey
+URxvt*background: black
+URxvt*scrollBar: false
+! URxvt*font: xft:Bitstream Vera Sans Mono:size=10
+URxvt*font: xft:-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1
+URxvt*letterSpace: -1
+URxvt*internalBorder: 1
+URxvt*cursorBlink: 0
+URxvt*visualBell: off
+URxvt*jumpScroll: true
+URxvt*skipScroll: true
+URxvt*saveLines: 32768
+
+
+URxvt.perl-ext: selection, mark-yank-urls, selection-to-clipboard
+
+
+XTerm*foreground: lightgray
+XTerm*background: black
+XTerm.vt100.faceName: Bitstrea:size=12:antialias=true
+
+
+
+
+URxvt*color0:       #AAAAAA   ! GRIS CLARO ahora como GRIS OSCURO
+URxvt*color1:       #FF5555   ! ROJO SUAVE ahora como ROJO
+URxvt*color2:       #55FF55   ! VERDE SUAVE ahora como VERDE
+URxvt*color3:       #FFFF55   ! AMARILLO SUAVE ahora como AMARILLO
+URxvt*color4:       #5555FF   ! AZUL SUAVE ahora como AZUL
+URxvt*color5:       #FF55FF   ! ROSA SUAVE ahora como ROSA
+URxvt*color6:       #55FFFF   ! CIAN SUAVE ahora como CIAN
+URxvt*color7:       #555555   ! GRIS SUAVE ahora como GRIS
+
+URxvt*color8:       #D0D0D0   ! GRIS OSCURO ahora como GRIS CLARO
+URxvt*color9:       #AA0000   ! ROJO ahora como ROJO SUAVE
+URxvt*color10:      #00AA00   ! VERDE ahora como VERDE SUAVE
+URxvt*color11:      #AA5500   ! AMARILLO ahora como AMARILLO SUAVE
+URxvt*color12:      #0000AA   ! AZUL ahora como AZUL SUAVE
+URxvt*color13:      #AA00AA   ! ROSA ahora como ROSA SUAVE
+URxvt*color14:      #00AAAA   ! CIAN ahora como CIAN SUAVE
+URxvt*color15:      #1C1C1C   ! NEGRO OSCURO como fondo (si lo prefieres más oscuro)
