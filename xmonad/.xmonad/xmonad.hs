@@ -31,7 +31,7 @@ main = do
         ]
 
 myStartupHook = do
-    spawn "bash ~/.config/i3/scripts/change_background.sh"  -- Cambia el wallpaper
+    spawn "bash ~/.local/bin/change_wallpaper.sh"  -- Cambia el wallpaper
 
 -- Función para centrar ventanas flotantes
 centerFloat :: ManageHook
