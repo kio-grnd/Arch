@@ -66,21 +66,6 @@
 #  Control + b:2 + Release
 
 
-
-# Montar NTFS
-"bash /home/cesc/scripts/mount_ntfs.sh"
-F9
-
-# Abrir ST
-"st"
-F7
-
-
-# Recargar Picom
-"bash ~/scripts/restart_picom.sh"
-    F11
-
-
 ##################################
 # End of xbindkeys configuration #
 ##################################
