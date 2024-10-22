@@ -18,24 +18,3 @@ URxvt.perl-ext: selection, mark-yank-urls, selection-to-clipboard
 XTerm*foreground: lightgray
 XTerm*background: black
 XTerm.vt100.faceName: Bitstrea:size=12:antialias=true
-
-
-
-
-URxvt*color0:       #555555   ! GRIS SUAVE
-URxvt*color1:       #FF5555   ! ROJO SUAVE
-URxvt*color2:       #55FF55   ! VERDE SUAVE
-URxvt*color3:       #FFFF55   ! AMARILLO SUAVE
-URxvt*color4:       #5555FF   ! AZUL SUAVE
-URxvt*color5:       #FF55FF   ! ROSA SUAVE
-URxvt*color6:       #55FFFF   ! CIAN SUAVE
-URxvt*color7:       #AAAAAA   ! GRIS
-
-URxvt*color8:       #AA0000   ! ROJO
-URxvt*color9:       #00AA00   ! VERDE
-URxvt*color10:      #AA5500   ! AMARILLO
-URxvt*color11:      #0000AA   ! AZUL
-URxvt*color12:      #AA00AA   ! ROSA
-URxvt*color13:      #00AAAA   ! CIAN
-URxvt*color14:      #AAAAAA   ! GRIS OSCURO
-URxvt*color15:      #D0D0D0   ! GRIS CLARO
