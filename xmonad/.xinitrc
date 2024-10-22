@@ -1,8 +1,16 @@
+#
+# ~/.xinitrc
+#
+# Executed by startx (run your window manager from here)
+
 # Configuración del teclado
 setxkbmap es
 
 # Iniciar xbindkeys
 xbindkeys &
+
+# Cargar configuraciones gráficas de X11 con xrdb y .Xresources
+xrdb -merge ~/.Xresources
 
 # Activar NumLock
 numlockx on &
