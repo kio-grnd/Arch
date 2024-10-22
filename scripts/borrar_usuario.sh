@@ -8,7 +8,7 @@ read -p "¿Está seguro de que desea eliminar el usuario '$usuario' y su directo
 
 if [[ "$confirmacion" =~ ^[Ss]$ ]]; then
     # Borrar el usuario y su directorio personal
-    sudo userdel -r "$usuario"
+    userdel -r "$usuario"
 
     if [[ $? -eq 0 ]]; then
         echo "Usuario '$usuario' y su directorio personal han sido eliminados exitosamente."
