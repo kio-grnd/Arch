@@ -66,7 +66,7 @@ pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
 # -----------------------------
 # Instalación de utilidades necesarias
 # -----------------------------
-pacman -S --noconfirm --needed alacritty dmenu rofi feh picom htop numlockx lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
+pacman -S --noconfirm --needed kitty dmenu rofi feh picom htop numlockx lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
 
 # -----------------------------
 # Instalación de compiladores y herramientas de desarrollo
