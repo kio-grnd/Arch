@@ -66,12 +66,12 @@ pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
 # -----------------------------
 # Instalación de utilidades necesarias
 # -----------------------------
-pacman -S --noconfirm --needed kitty dmenu rofi feh picom htop numlockx lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
+pacman -S --noconfirm --needed kitty xterm dmenu rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
 
 # -----------------------------
 # Instalación de compiladores y herramientas de desarrollo
 # -----------------------------
-pacman -S --noconfirm --needed git base-devel gcc make dkms linux-headers gd cmake python python-pip go rust
+pacman -S --noconfirm --needed git base-devel gcc make dkms linux-headers gd cmake python python-pip go rust 
 
 # -----------------------------
 # Instalación de soporte NTFS y herramientas de descompresión
