@@ -15,8 +15,14 @@ xrdb -merge ~/.Xresources
 # Activar NumLock
 numlockx on &
 
+picom &
+
 # nVIDIA fix-tearing
 # ~/.local/bin/nvidia-fix-tearing.sh &
+
+# Iniciar Polybar
+polybar &
+
 
 # Para mostrar un cursor por defecto
 # xsetroot -cursor_name left_ptr &
