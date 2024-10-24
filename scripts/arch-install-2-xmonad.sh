@@ -233,8 +233,15 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 chsh -s /bin/zsh $USERNAME
 chsh -s /bin/zsh root
 
-# Recargar la shell para aplicar Zsh inmediatamente
-echo "Recargando shell para aplicar Zsh..."
+# Agregar PATH personalizado a ~/.zshrc del usuario
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> /home/$USERNAME/.zshrc
+chown $USERNAME:$USERNAME /home/$USERNAME/.zshrc
+
+# Agregar PATH personalizado a ~/.zshrc de root
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> /root/.zshrc
+
+# Recargar la shell para aplicar Zsh y cambios en PATH inmediatamente
+echo "Recargando shell para aplicar Zsh y cambios en PATH..."
 sudo -u $USERNAME zsh -c "source ~/.zshrc"
 zsh -c "source ~/.zshrc"
 
