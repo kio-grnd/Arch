@@ -11,6 +11,7 @@ import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Hooks.EwmhDesktops (ewmh, setEwmhActivateHook)
 import XMonad.Hooks.Focus (activateSwitchWs)
 import Control.Monad (liftM2)
+import XMonad.Layout.Gaps  -- Importar el módulo de gaps
 
 main = do
     polybarProc <- spawnPipe "bash ~/.config/polybar/launch.sh"  -- Inicia Polybar con el script
@@ -18,7 +19,7 @@ main = do
     xmonad $ ewmh (setEwmhActivateHook ah $ docks def
         { terminal = "xterm"                   -- Terminal por defecto
         , modMask = mod4Mask                   -- Usa la tecla de Windows como Mod
-        , layoutHook = avoidStruts $ layoutHook def  -- Evita que la barra cubra las ventanas
+        , layoutHook = avoidStruts $ myLayout  -- Usa la función myLayout para incluir gaps
         , startupHook = myStartupHook          -- Inicializa Polybar y wallpaper
         , manageHook = myManageHook            -- Añade las reglas de gestión de ventanas
         , logHook = dynamicLogWithPP polybarPP {  -- Configura Polybar para recibir logs de XMonad
@@ -55,6 +56,8 @@ myManageHook = composeAll
 
   where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
+-- Función para definir el layout con gaps
+myLayout = gaps [(U, 10), (D, 10), (L, 10), (R, 10)] $ Tall 1 (3/100) (1/2)  -- Define los gaps de 10 píxeles
 
 -- Función para centrar ventanas flotantes
 centerFloat :: ManageHook
