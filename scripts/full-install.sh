@@ -35,7 +35,7 @@ cat << EOF > /mnt/setup_choice.sh
 #!/bin/bash
 # Clonar el repositorio solo una vez
 echo "Clonando el repositorio..."
-git clone https://github.com/vetealdiablo/Arch /tmp/arch-scripts
+git clone https://github.com/kio-grnd/Arch /tmp/arch-scripts
 
 # Elegir entorno de escritorio
 echo -e "\n¿Qué entorno de escritorio deseas instalar?"
@@ -60,7 +60,7 @@ select option in "i3" "bspwm" "xmonad" "Salir"; do
         xmonad)
             echo "Ejecutando script de instalación de xmonad..."
             echo "Clonando dotfiles de xmonad..."
-            git clone https://github.com/vetealdiablo/Arch.git /tmp/arch-scripts
+            git clone https://github.com/kio-grnd/Arch.git /tmp/arch-scripts
             echo "Copiando dotfiles de xmonad..."
             cp -r /tmp/arch-scripts/xmonad /home/$USERNAME/.config/xmonad
             chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/xmonad
