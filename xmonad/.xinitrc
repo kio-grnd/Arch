@@ -16,7 +16,7 @@ xrdb -merge ~/.Xresources &
 numlockx on &
 
 # Iniciar Picom para efectos de composición
-picom &
+# picom &
 
 # (Opcional) Corregir el tearing en nVIDIA
 # ~/.local/bin/nvidia-fix-tearing.sh &
