@@ -41,9 +41,11 @@
 *.color14: nord7
 *.color15: nord6
 
-
+!-- TIPOGRAFÍAS -- !
 URxvt.font: xft:JetBrainsMono Nerd Font:style=medium:pixelsize=15
-XTerm*faceName: JetBrainsMono Nerd Font:style=medium:pixelsize=15
+XTerm*faceName: Terminess Nerd Font Propo:style=regula:pixelsize=16
+! XTerm*faceName: IosevkaTerm Nerd Font:style=medium:pixelsize=15
+! XTerm*faceName: JetBrainsMono Nerd Font:style=medium:pixelsize=15
 
 !-- ST -- !
 st.opacity:        255
