@@ -109,12 +109,6 @@ systemctl enable NetworkManager
 systemctl start NetworkManager
 
 # -----------------------------
-# Instalación de XMonad y Xmobar
-# -----------------------------
-
-pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
-
-# -----------------------------
 # Instalación de utilidades esenciales
 # -----------------------------
 
