@@ -7,6 +7,7 @@ Este repositorio contiene documentación útil y scripts para facilitar la gesti
 
 - **Scripts**: Herramientas automatizadas para realizar tareas específicas en Arch Linux.
 - **Documentación**: Guías y notas sobre la configuración y el uso de Arch Linux.
+- **dotfiles**: Mis configuraciones para Arch Linux.
 
 ## Requisitos
 
