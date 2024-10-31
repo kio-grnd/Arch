@@ -169,4 +169,5 @@ echo "Mostrando discos y particiones disponibles:"
 lsblk
 
 echo "Usa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales."
-read -p "Presiona Enter para continuar..."
+echo "Instala grub en el disco deseado ej: grub-install /dev/sdd"
+echo "grub-mkconfig -o /boot/grub/grub.cfg"
