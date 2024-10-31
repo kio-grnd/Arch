@@ -31,16 +31,6 @@ passwd
 useradd -m -G wheel $USERNAME
 passwd $USERNAME
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-
-# -----------------------------
-# Mostrar discos y particiones disponibles
-# -----------------------------
-echo "Mostrando discos y particiones disponibles:"
-lsblk
-
-echo "Usa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales."
-read -p "Presiona Enter para continuar..."
-
 # -----------------------------
 # Instalación de controladores NVIDIA y configuración de gráficos
 # -----------------------------
@@ -79,7 +69,7 @@ pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
 # -----------------------------
 # Instalación de utilidades esenciales
 # -----------------------------
-pacman -S --noconfirm --needed kitty xterm dmenu rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
+pacman -S --noconfirm --needed kitty xterm dmenu polybar rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
 
 # -----------------------------
 # Instalación de compiladores y herramientas de desarrollo
@@ -167,75 +157,16 @@ chmod -R u+rwX /home/$USERNAME/.*
 rm -rf /tmp/arch
 
 # -----------------------------
-# Instalación de Oh My Zsh para usuario y root
-# -----------------------------
-echo "Instalando Oh My Zsh para el usuario $USERNAME..."
-sudo -u $USERNAME sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-echo "Instalando Oh My Zsh para root..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Cambiar la shell predeterminada a Zsh para el usuario y root
-chsh -s /bin/zsh $USERNAME
-chsh -s /bin/zsh root
-
-# Agregar PATH personalizado a ~/.zshrc del usuario
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> /home/$USERNAME/.zshrc
-chown $USERNAME:$USERNAME /home/$USERNAME/.zshrc
-
-# Agregar PATH personalizado a ~/.zshrc de root
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> /root/.zshrc
-
-# Recargar la shell para aplicar Zsh y cambios en PATH inmediatamente
-echo "Recargando shell para aplicar Zsh y cambios en PATH..."
-sudo -u $USERNAME zsh -c "source ~/.zshrc"
-zsh -c "source ~/.zshrc"
-
-# -----------------------------
-# Mostrar discos y particiones disponibles para instalar GRUB
-# -----------------------------
-echo "Mostrando discos y particiones disponibles:"
-lsblk
-
-# Preguntar al usuario por el dispositivo donde instalar GRUB
-read -p "Introduce el dispositivo donde instalar GRUB (ejemplo: /dev/sda): " DISCO
-
-# Validar que el dispositivo sea correcto
-if [[ ! -b $DISCO ]]; then
-    echo -e "\e[31mError: El dispositivo $DISCO no es válido.\e[0m"
-    exit 1
-fi
-
-# Instalación de GRUB y os-prober
-echo -e "\e[34mInstalando GRUB y os-prober...\e[0m"
-pacman -S grub os-prober --noconfirm
-if [[ $? -ne 0 ]]; then
-    echo -e "\e[31mError: La instalación de GRUB y os-prober ha fallado.\e[0m"
-    exit 1
-fi
-
-# Instalar GRUB en el dispositivo (disco completo, no una partición)
-echo -e "\e[34mInstalando GRUB en $DISCO...\e[0m"
-grub-install "$DISCO"
-if [[ $? -ne 0 ]]; then
-    echo -e "\e[31mError: La instalación de GRUB ha fallado.\e[0m"
-    exit 1
-fi
-
-# Habilitar os-prober para detectar otros sistemas operativos
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-
-# Generar el archivo de configuración de GRUB
-echo -e "\e[34mGenerando el archivo de configuración de GRUB...\e[0m"
-grub-mkconfig -o /boot/grub/grub.cfg
-if [[ $? -ne 0 ]]; then
-    echo -e "\e[31mError: La generación del archivo de configuración de GRUB ha fallado.\e[0m"
-    exit 1
-fi
-
-# -----------------------------
 # Finalización
 # -----------------------------
 
 echo -e "\e[32mEl script ha finalizado correctamente.\e[0m"
-umount -R /mnt
+
+# -----------------------------
+# Mostrar discos y particiones disponibles
+# -----------------------------
+echo "Mostrando discos y particiones disponibles:"
+lsblk
+
+echo "Usa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales."
+read -p "Presiona Enter para continuar..."
