@@ -15,7 +15,7 @@ read -p "Introduce el nombre de usuario: " USERNAME
 # Configuración inicial del sistema
 # -----------------------------
 ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
-hwclock --systohc
+hwclock --systohc --localtime
 
 echo "es_AR.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
@@ -31,6 +31,7 @@ passwd
 useradd -m -G wheel $USERNAME
 passwd $USERNAME
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+
 # -----------------------------
 # Instalación de controladores NVIDIA y configuración de gráficos
 # -----------------------------
@@ -150,7 +151,7 @@ git clone https://github.com/kio-grnd/Arch.git /tmp/arch
 echo "Copiando dotfiles a /home/$USERNAME..."
 cp -r /tmp/arch/xmonad/* /tmp/arch/xmonad/.[!.]* /home/$USERNAME/
 
-chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
+chown -R $USERNAME:$USERNAME /home/$USERNAME/.* 
 chmod -R u+rwX /home/$USERNAME/.*
 
 # Limpiar
@@ -159,15 +160,14 @@ rm -rf /tmp/arch
 # -----------------------------
 # Finalización
 # -----------------------------
-
 echo -e "\e[32mEl script ha finalizado correctamente.\e[0m"
 
 # -----------------------------
 # Mostrar discos y particiones disponibles
 # -----------------------------
-echo "Mostrando discos y particiones disponibles:"
+echo -e "\e[32mMostrando discos y particiones disponibles:\e[0m"
 lsblk
 
-echo "Usa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales."
-echo "Instala grub en el disco deseado ej: grub-install /dev/sdd"
-echo "grub-mkconfig -o /boot/grub/grub.cfg"
+echo -e "\e[32mUsa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales.\e[0m"
+echo -e "\e[32mInstala grub en el disco deseado ej: grub-install /dev/sdd\e[0m"
+echo -e "\e[32mgrub-mkconfig -o /boot/grub/grub.cfg\e[0m"
