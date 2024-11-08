@@ -88,7 +88,9 @@ pacman -S --noconfirm --needed ntfs-3g unzip p7zip
 pacman -S bluez bluez-utils --noconfirm
 systemctl enable bluetooth.service
 systemctl start bluetooth.service
-echo -e "power on\nagent on\ndefault-agent\n" | bluetoothctl
+
+# Configuración automática de Bluetooth sin necesidad de interacción
+echo -e "power on\nagent on\ndefault-agent\nquit\n" | bluetoothctl
 
 # -----------------------------
 # Configuración del teclado para X11 (ES)
@@ -143,7 +145,7 @@ chmod +x /home/$USERNAME/.xinitrc
 chown $USERNAME:$USERNAME /home/$USERNAME/.xinitrc
 
 # -----------------------------
-# Copiar dotfiles al directorio home
+# Clonación de dotfiles de XMonad desde GitHub
 # -----------------------------
 echo "Clonando dotfiles desde GitHub..."
 git clone https://github.com/kio-grnd/Arch.git /tmp/arch
@@ -158,16 +160,33 @@ chmod -R u+rwX /home/$USERNAME/.*
 rm -rf /tmp/arch
 
 # -----------------------------
+# Selección del disco para instalar GRUB
+# -----------------------------
+echo -e "\nSeleccione el disco en el que desea instalar GRUB (ejemplo: /dev/sda):"
+lsblk
+read -p "Introduce el disco deseado: " GRUB_DISK
+
+# Verificar si el disco elegido es válido
+if [ ! -b "$GRUB_DISK" ]; then
+    echo "El disco $GRUB_DISK no es válido."
+    exit 1
+fi
+
+# -----------------------------
+# Instalación de GRUB (MBR)
+# -----------------------------
+echo "Instalando GRUB para MBR en $GRUB_DISK..."
+
+# Instalar GRUB
+pacman -S --noconfirm grub
+
+# Instalar GRUB en el disco seleccionado
+grub-install --target=i386-pc $GRUB_DISK
+
+# Generar la configuración de GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# -----------------------------
 # Finalización
 # -----------------------------
 echo -e "\e[32mEl script ha finalizado correctamente.\e[0m"
-
-# -----------------------------
-# Mostrar discos y particiones disponibles
-# -----------------------------
-echo -e "\e[32mMostrando discos y particiones disponibles:\e[0m"
-lsblk
-
-echo -e "\e[32mUsa el comando 'fdisk -l' o 'lsblk -f' para detalles adicionales.\e[0m"
-echo -e "\e[32mInstala grub en el disco deseado ej: grub-install /dev/sdd\e[0m"
-echo -e "\e[32mgrub-mkconfig -o /boot/grub/grub.cfg\e[0m"
