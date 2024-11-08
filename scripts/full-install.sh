@@ -44,11 +44,6 @@ cat << EOF > /mnt/setup_choice.sh
 echo "Clonando el repositorio..."
 git clone https://github.com/kio-grnd/Arch /tmp/arch-scripts
 
-# Crear los directorios de dotfiles si no existen
-mkdir -p /home/$USERNAME/.config/i3
-mkdir -p /home/$USERNAME/.config/bspwm
-mkdir -p /home/$USERNAME/.config/xmonad
-
 # Elegir entorno de escritorio
 echo -e "\n¿Qué entorno de escritorio deseas instalar?"
 select option in "i3" "bspwm" "xmonad" "Salir"; do
@@ -56,26 +51,16 @@ select option in "i3" "bspwm" "xmonad" "Salir"; do
         i3)
             echo "Ejecutando script de instalación de i3..."
             bash /tmp/arch-scripts/scripts/arch-install-2-i3.sh
-            echo "Copiando dotfiles de i3..."
-            cp -r /tmp/arch-scripts/i3 /home/$USERNAME/.config/i3
-            chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/i3
             break
             ;;
         bspwm)
             echo "Ejecutando script de instalación de bspwm..."
             bash /tmp/arch-scripts/scripts/arch-install-2-bspwm.sh
-            echo "Copiando dotfiles de bspwm..."
-            cp -r /tmp/arch-scripts/bspwm /home/$USERNAME/.config/bspwm
-            chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/bspwm
             break
             ;;
         xmonad)
             echo "Ejecutando script de instalación de xmonad..."
-            # Ejecutar el script de instalación de xmonad
             bash /tmp/arch-scripts/scripts/arch-install-2-xmonad.sh
-            echo "Copiando dotfiles de xmonad..."
-            cp -r /tmp/arch-scripts/xmonad /home/$USERNAME/.config/xmonad
-            chown -R $USERNAME:$USERNAME /home/$USERNAME/.config/xmonad
             break
             ;;
         Salir)
