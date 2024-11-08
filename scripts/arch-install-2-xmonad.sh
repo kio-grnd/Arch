@@ -89,6 +89,9 @@ pacman -S bluez bluez-utils --noconfirm
 systemctl enable bluetooth.service
 systemctl start bluetooth.service
 
+# Esperar un poco para asegurar que Bluetooth se haya iniciado
+sleep 2
+
 # Configuración automática de Bluetooth sin necesidad de interacción
 echo -e "power on\nagent on\ndefault-agent\nquit\n" | bluetoothctl
 
@@ -160,6 +163,17 @@ chmod -R u+rwX /home/$USERNAME/.*
 rm -rf /tmp/arch
 
 # -----------------------------
+# Detectar si el sistema es UEFI o BIOS
+# -----------------------------
+if [ -d /sys/firmware/efi ]; then
+    BOOT_MODE="UEFI"
+else
+    BOOT_MODE="BIOS"
+fi
+
+echo "Modo de arranque detectado: $BOOT_MODE"
+
+# -----------------------------
 # Selección del disco para instalar GRUB
 # -----------------------------
 echo -e "\nSeleccione el disco en el que desea instalar GRUB (ejemplo: /dev/sda):"
@@ -173,18 +187,52 @@ if [ ! -b "$GRUB_DISK" ]; then
 fi
 
 # -----------------------------
-# Instalación de GRUB (MBR)
+# Instalación de GRUB dependiendo del modo de arranque (UEFI o BIOS)
 # -----------------------------
-echo "Instalando GRUB para MBR en $GRUB_DISK..."
-
-# Instalar GRUB
-pacman -S --noconfirm grub
-
-# Instalar GRUB en el disco seleccionado
-grub-install --target=i386-pc $GRUB_DISK
+if [ "$BOOT_MODE" == "UEFI" ]; then
+    pacman -S --noconfirm grub efibootmgr
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+else
+    pacman -S --noconfirm grub
+    grub-install --target=i386-pc $GRUB_DISK
+fi
 
 # Generar la configuración de GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
+
+# -----------------------------
+# Crear script para terminar la configuración en el directorio del usuario
+# -----------------------------
+echo "Creando script de configuración final..."
+
+cat << EOF > /home/$USERNAME/configuracion_final.sh
+#!/bin/bash
+
+# Instalar yay desde AUR
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+cd /tmp/yay
+makepkg -si --noconfirm
+cd ~
+rm -rf /tmp/yay
+
+# Instalar Zsh y establecerlo como shell predeterminado
+pacman -S --noconfirm zsh
+chsh -s /bin/zsh
+
+# Instalar Oh-My-Zsh
+sh -c "\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Instalar Google Chrome
+yay -S --noconfirm google-chrome
+EOF
+
+# Hacer ejecutable el script
+chmod +x /home/$USERNAME/configuracion_final.sh
+chown $USERNAME:$USERNAME /home/$USERNAME/configuracion_final.sh
+
+# Informar al usuario
+echo "Se ha creado el script de configuración final en /home/$USERNAME/configuracion_final.sh"
+echo "Ejecuta el script para completar la configuración."
 
 # -----------------------------
 # Finalización
