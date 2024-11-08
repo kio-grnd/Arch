@@ -42,24 +42,25 @@
 *.color15: nord6
 
 !-- TIPOGRAFÍAS -- !
-URxvt.font: xft:JetBrainsMono Nerd Font:style=medium:pixelsize=15
-XTerm*faceName: Terminess Nerd Font Propo:style=regular:pixelsize=15
+URxvt.font: xft:JetBrainsMono Nerd Font:style=medium:pixelsize=14
+XTerm*faceName: Terminess Nerd Font Propo:style=regular:pixelsize=14
 
 !-- FUENTES ADICIONALES (COMENTADAS) -- !
 
 ! Para usar estas fuentes en todas las aplicaciones, descomenta la línea correspondiente y aplica con `xrdb -merge ~/.Xresources`
-! *.font: xft:Mononoki Nerd Font Mono:style=Regular:pixelsize=15
-! *.font: xft:Mononoki Nerd Font Mono:size=15
-! *.font: xft:Mononoki Nerd Font:style=Regular:pixelsize=15
-! *.font: xft:Mononoki Nerd Font:style=Bold:pixelsize=15
-! *.font: xft:SauceCodePro NF Black:size=15
-! *.font: xft:SauceCodePro NF:style=Regular:pixelsize=15
-! *.font: xft:Hack Nerd Font:style=Regular:pixelsize=15
-! *.font: xft:Hack Nerd Font:style=Bold:pixelsize=15
-! *.font: xft:NotoSans NF:style=Regular:pixelsize=15
-! *.font: xft:NotoSans NF:style=Bold:pixelsize=15
-! *.font: xft:IosevkaTerm Nerd Font:style=medium:pixelsize=15
-! *.font: xft:JetBrainsMono Nerd Font:style=medium:pixelsize=15
+! *.font: xft:Mononoki Nerd Font Mono:style=Regular:pixelsize=14
+! *.font: xft:Mononoki Nerd Font Mono:size=14
+! *.font: xft:Mononoki Nerd Font:style=Regular:pixelsize=14
+! *.font: xft:Mononoki Nerd Font:style=Bold:pixelsize=14
+! *.font: xft:SauceCodePro NF Black:size=14
+! *.font: xft:SauceCodePro NF:style=Regular:pixelsize=14
+! *.font: xft:Hack Nerd Font:style=Regular:pixelsize=14
+! *.font: xft:Hack Nerd Font:style=Bold:pixelsize=14
+! *.font: xft:NotoSans NF:style=Regular:pixelsize=14
+! *.font: xft:NotoSans NF:style=Bold:pixelsize=14
+! *.font: xft:IosevkaTerm Nerd Font:style=medium:pixelsize=14
+! *.font: xft:JetBrainsMono Nerd Font:style=medium:pixelsize=14
+
 
 
 !-- ST -- !
