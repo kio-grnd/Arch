@@ -3,14 +3,12 @@
 # -----------------------------
 # Variables generales del script
 # -----------------------------
-read -p "Introduce el nombre del host: " HOSTNAME
-read -p "Introduce tu nombre de usuario: " USERNAME
 
 # -----------------------------
 # Particionamiento
 # -----------------------------
-read -p "Introduce la partición raíz (ejemplo: /dev/sda1): " ROOT_PARTITION
-read -p "Introduce la partición swap (ejemplo: /dev/sda2): " SWAP_PARTITION
+# read -p "Introduce la partición raíz (ejemplo: /dev/sda1): " ROOT_PARTITION
+# read -p "Introduce la partición swap (ejemplo: /dev/sda2): " SWAP_PARTITION
 
 # Formateo y montaje de las particiones (descomentar si se desea habilitar)
 # mkfs.ext4 $ROOT_PARTITION
