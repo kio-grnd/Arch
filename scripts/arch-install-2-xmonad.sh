@@ -35,12 +35,12 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 # -----------------------------
 # Instalación de controladores NVIDIA y configuración de gráficos
 # -----------------------------
-pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
+# pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
 
 # Desactivar Nouveau
-echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
-echo "options nouveau modeset=0" >> /etc/modprobe.d/nouveau.conf
-echo "drm.modeset=0" >> /boot/loader/entries/arch.conf
+# echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
+# echo "options nouveau modeset=0" >> /etc/modprobe.d/nouveau.conf
+# echo "drm.modeset=0" >> /boot/loader/entries/arch.conf
 
 # -----------------------------
 # Instalación de Xorg (servidor gráfico)
@@ -209,6 +209,7 @@ cat << EOF > /home/$USERNAME/configuracion_final.sh
 #!/bin/bash
 
 # Instalar yay desde AUR
+echo "Clonando y construyendo yay desde AUR..."
 git clone https://aur.archlinux.org/yay.git /tmp/yay
 cd /tmp/yay
 makepkg -si --noconfirm
@@ -216,14 +217,20 @@ cd ~
 rm -rf /tmp/yay
 
 # Instalar Zsh y establecerlo como shell predeterminado
-pacman -S --noconfirm zsh
-chsh -s /bin/zsh
+echo "Instalando Zsh y configurando como shell predeterminado..."
+pacman -S zsh --noconfirm
+chsh -s $(which zsh)   # Usar which para obtener la ruta correcta de zsh
 
 # Instalar Oh-My-Zsh
-sh -c "\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+echo "Instalando Oh-My-Zsh..."
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Instalar Google Chrome
-yay -S --noconfirm google-chrome
+echo "Instalando Google Chrome con yay..."
+yay -S google-chrome --noconfirm
+
+# Fin
+echo "La configuración final se ha completado con éxito."
 EOF
 
 # Hacer ejecutable el script
