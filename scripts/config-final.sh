@@ -24,6 +24,6 @@ yay -S --noconfirm google-chrome || { echo "Error al instalar Google Chrome"; ex
 
 # Instalar paquetes de NVIDIA y CUDA
 echo "Instalando los controladores NVIDIA, DKMS, nvidia-settings y CUDA..."
-yay -S --noconfirm nvidia-dkms nvidia-settings nvidia-utils cuda || { echo "Error al instalar NVIDIA o CUDA"; exit 1; }
+yay -S --noconfirm nvidia dkms nvidia-settings nvidia-utils cuda || { echo "Error al instalar NVIDIA o CUDA"; exit 1; }
 
 echo "Todo instalado con éxito."
