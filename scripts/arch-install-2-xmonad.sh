@@ -88,7 +88,7 @@ pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
 # Instalación de utilidades esenciales
 # -----------------------------
 echo "Instalando utilidades esenciales..."
-pacman -S --noconfirm --needed kitty xterm dmenu polybar rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
+pacman -S --noconfirm --needed kitty xterm dmenu fish polybar rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
 
 # -----------------------------
 # Instalación de compiladores y herramientas de desarrollo
