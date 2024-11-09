@@ -1,32 +1,58 @@
 #!/bin/bash
 
-# -----------------------------
-# Variables generales del script
-# -----------------------------
-# read -p "Introduce el nombre del disco (ejemplo: /dev/sda): " DISK
-# read -p "Introduce el tamaño de la partición swap (ejemplo: 2G): " SWAPSIZE
+# Este script automatiza la instalación básica de Arch Linux en un entorno BIOS con idioma español de Argentina.
+# Permite elegir el nombre del host, la zona horaria y el disco para instalar GRUB.
 
-# -----------------------------
-# Particionamiento
-# -----------------------------
-# echo "Particionando el disco..."
-# echo "Confirmando particiones..."
-read -p "Introduce la partición raíz (ejemplo: /dev/sda1): " ROOT_PARTITION
-read -p "Introduce la partición swap (ejemplo: /dev/sda2): " SWAP_PARTITION
+# Paso 1: Instalar los paquetes esenciales
+echo "Instalando paquetes esenciales..."
+pacstrap -K /mnt base linux linux-firmware
 
-# mkfs.ext4 $ROOT_PARTITION
-# mkswap $SWAP_PARTITION
-# swapon $SWAP_PARTITION
-# mount $ROOT_PARTITION /mnt
-
-# -----------------------------
-# Instalación base del sistema
-# -----------------------------
-pacstrap /mnt base linux linux-firmware vim nano
-
+# Paso 2: Generar el archivo fstab
+echo "Generando el archivo fstab..."
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# -----------------------------
-# Finalización
-# -----------------------------
-echo "Instalación base completada. Para continuar, ejecuta 'arch-chroot /mnt' y luego ejecuta 'bash setup.sh' para la configuración."
+# Paso 3: Cambiar al nuevo sistema chroot
+echo "Cambiando al sistema chroot..."
+arch-chroot /mnt <<EOF
+
+# Paso 4: Configuración de la zona horaria
+echo "Configurando la zona horaria..."
+ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
+hwclock --hctosys
+
+# Paso 5: Configuración de la localización
+echo "Configurando la localización..."
+sed -i 's/#es_AR.UTF-8/es_AR.UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=es_AR.UTF-8" > /etc/locale.conf
+echo "KEYMAP=es" > /etc/vconsole.conf
+
+# Paso 6: Configuración del nombre del host
+echo "Por favor ingresa el nombre de tu máquina (host):"
+read hostname
+echo $hostname > /etc/hostname
+
+# Paso 7: Configuración de la contraseña de root
+echo "Estableciendo la contraseña de root..."
+passwd
+
+# Paso 8: Instalación y configuración de GRUB
+# Permite elegir el disco donde instalar GRUB
+echo "Por favor, ingresa el disco donde quieres instalar GRUB (ej. /dev/sda):"
+read grub_disk
+echo "Instalando GRUB en $grub_disk..."
+pacman -S --noconfirm grub
+grub-install --target=i386-pc $grub_disk
+
+# Paso 9: Generación del archivo de configuración de GRUB
+echo "Generando el archivo de configuración de GRUB..."
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# Paso 10: Salir del chroot
+exit
+
+# Paso 11: Reiniciar el sistema
+# echo "Instalación completada. Reiniciando el sistema..."
+# reboot
+
+EOF
