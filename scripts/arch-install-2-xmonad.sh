@@ -3,7 +3,9 @@
 # -----------------------------
 # Establecer el teclado en español
 # -----------------------------
+echo "Estableciendo el teclado en español..."
 loadkeys es
+echo "KEYMAP=es" > /etc/vconsole.conf
 
 # -----------------------------
 # Preguntar al usuario por nombre de host y nombre de usuario
@@ -12,8 +14,23 @@ read -p "Introduce el nombre de host: " HOSTNAME
 read -p "Introduce el nombre de usuario: " USERNAME
 
 # -----------------------------
+# Verificar si el usuario ya existe
+# -----------------------------
+if id "$USERNAME" &>/dev/null; then
+    echo "El usuario '$USERNAME' ya existe. No se creará un nuevo usuario."
+else
+    # Si el usuario no existe, crear el usuario
+    useradd -m -G wheel $USERNAME
+    passwd $USERNAME
+    if ! grep -q '%wheel' /etc/sudoers; then
+        echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+    fi
+fi
+
+# -----------------------------
 # Configuración inicial del sistema
 # -----------------------------
+echo "Configurando la zona horaria..."
 ln -sf /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime
 hwclock --systohc --localtime
 
@@ -28,16 +45,12 @@ echo "127.0.1.1    $HOSTNAME.localdomain $HOSTNAME" >> /etc/hosts
 
 passwd
 
-useradd -m -G wheel $USERNAME
-passwd $USERNAME
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-
 # -----------------------------
 # Instalación de controladores NVIDIA y configuración de gráficos
 # -----------------------------
 # pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
 
-# Desactivar Nouveau
+# Desactivar Nouveau (si es necesario)
 # echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
 # echo "options nouveau modeset=0" >> /etc/modprobe.d/nouveau.conf
 # echo "drm.modeset=0" >> /boot/loader/entries/arch.conf
@@ -45,12 +58,14 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 # -----------------------------
 # Instalación de Xorg (servidor gráfico)
 # -----------------------------
-pacman -S xorg xorg-server xorg-xinit --noconfirm
+echo "Instalando Xorg..."
+pacman -S --noconfirm --needed xorg xorg-server xorg-xinit
 
 # -----------------------------
 # Configuración de sonido (PipeWire)
 # -----------------------------
-pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils --noconfirm
+echo "Instalando PipeWire y configurando sonido..."
+pacman -S --noconfirm --needed pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber alsa-utils
 systemctl --user enable wireplumber
 systemctl --user start wireplumber
 alsamixer
@@ -58,6 +73,7 @@ alsamixer
 # -----------------------------
 # Configuración de NetworkManager
 # -----------------------------
+echo "Instalando y habilitando NetworkManager..."
 pacman -S --noconfirm --needed networkmanager
 systemctl enable NetworkManager
 systemctl start NetworkManager
@@ -65,36 +81,54 @@ systemctl start NetworkManager
 # -----------------------------
 # Instalación de XMonad y Xmobar
 # -----------------------------
+echo "Instalando XMonad y Xmobar..."
 pacman -S --noconfirm --needed xmonad xmonad-contrib xmobar
 
 # -----------------------------
 # Instalación de utilidades esenciales
 # -----------------------------
+echo "Instalando utilidades esenciales..."
 pacman -S --noconfirm --needed kitty xterm dmenu polybar rofi feh picom htop numlockx loupe lxappearance neovim git bat ranger ueberzug wget curl zsh zsh-completions xbindkeys rxvt-unicode ttf-bitstream-vera
 
 # -----------------------------
 # Instalación de compiladores y herramientas de desarrollo
 # -----------------------------
-pacman -S --noconfirm --needed git base-devel gcc make dkms linux-headers gd cmake python python-pip go rust
+echo "Instalando herramientas de desarrollo..."
+pacman -S --noconfirm --needed git base-devel gcc make ninja linux-headers gd cmake python python-pip go rust
 
 # -----------------------------
 # Instalación de soporte NTFS y herramientas de descompresión
 # -----------------------------
+echo "Instalando soporte NTFS y herramientas de descompresión..."
 pacman -S --noconfirm --needed ntfs-3g unzip p7zip
 
 # -----------------------------
 # Instalación y configuración de Bluetooth
 # -----------------------------
-pacman -S bluez bluez-utils --noconfirm
+echo "Instalando y configurando Bluetooth..."
+
+# Instalación de paquetes necesarios
+pacman -S --noconfirm --needed bluez bluez-utils
+
+# Asegurarse de que el módulo btusb esté cargado
+if ! lsmod | grep -q btusb; then
+    modprobe btusb
+fi
+
+# Habilitar e iniciar el servicio bluetooth
 systemctl enable bluetooth.service
 systemctl start bluetooth.service
 
-# Esperar un poco para asegurar que Bluetooth se haya iniciado
-sleep 2
+# Esperar a que el servicio de Bluetooth se inicie correctamente
+while ! systemctl is-active --quiet bluetooth.service; do
+    echo "Esperando a que el servicio Bluetooth se inicie..."
+    sleep 1
+done
 
-# Configuración automática de Bluetooth sin necesidad de interacción
+# Encender el adaptador Bluetooth, activar el agente y configurarlo como agente predeterminado
 echo -e "power on\nagent on\ndefault-agent\nquit\n" | bluetoothctl
 
+echo "Bluetooth configurado correctamente."
 # -----------------------------
 # Configuración del teclado para X11 (ES)
 # -----------------------------
@@ -103,11 +137,11 @@ mkdir -p /etc/X11/xorg.conf.d/
 cat << EOF > /etc/X11/xorg.conf.d/00-keyboard.conf
 # Configuración del teclado en español para X11
 Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "es"
-        Option "XkbModel" "pc105"
-        Option "XkbOptions" "terminate:ctrl_alt_bksp"
+    Identifier "system-keyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "es"
+    Option "XkbModel" "pc105"
+    Option "XkbOptions" "terminate:ctrl_alt_bksp"
 EndSection
 EOF
 
@@ -115,6 +149,7 @@ EOF
 # Creación del archivo .xinitrc
 # -----------------------------
 echo "Creando el archivo .xinitrc..."
+mkdir -p /home/$USERNAME
 cat << EOF > /home/$USERNAME/.xinitrc
 #!/bin/bash
 
@@ -157,7 +192,7 @@ echo "Copiando dotfiles a /home/$USERNAME..."
 cp -r /tmp/arch/xmonad/* /tmp/arch/xmonad/.[!.]* /home/$USERNAME/
 
 chown -R $USERNAME:$USERNAME /home/$USERNAME/.* 
-chmod -R u+rwX /home/$USERNAME/.*
+chmod -R u+rwX /home/$USERNAME/.* 
 
 # Limpiar
 rm -rf /tmp/arch
@@ -218,8 +253,8 @@ rm -rf /tmp/yay
 
 # Instalar Zsh y establecerlo como shell predeterminado
 echo "Instalando Zsh y configurando como shell predeterminado..."
-pacman -S zsh --noconfirm
-chsh -s $(which zsh)   # Usar which para obtener la ruta correcta de zsh
+pacman -S --noconfirm zsh
+chsh -s /bin/zsh
 
 # Instalar Oh-My-Zsh
 echo "Instalando Oh-My-Zsh..."
@@ -227,7 +262,11 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 # Instalar Google Chrome
 echo "Instalando Google Chrome con yay..."
-yay -S google-chrome --noconfirm
+yay -S --noconfirm google-chrome
+
+# Instalar paquetes de NVIDIA y CUDA
+echo "Instalando los controladores NVIDIA, DKMS, nvidia-settings y CUDA..."
+yay -S --noconfirm nvidia dkms nvidia-settings cuda
 
 # Fin
 echo "La configuración final se ha completado con éxito."
