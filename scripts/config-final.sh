@@ -21,5 +21,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 echo "Instalando Google Chrome con yay..."
 yay -S --noconfirm google-chrome
 
+# Instalar paquetes de NVIDIA y CUDA
+echo "Instalando los controladores NVIDIA, DKMS, nvidia-settings y CUDA..."
+yay -S --noconfirm nvidia dkms nvidia-settings cuda
+
 # Fin
 echo "La configuración final se ha completado con éxito."
