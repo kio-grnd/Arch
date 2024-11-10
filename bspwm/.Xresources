@@ -6,9 +6,27 @@ Xft.hintstyle:       hintslight
 Xft.rgba:            rgb
 Xft.lcdfilter:       lcddefault
 
-! URxvt Configuración
-URxvt.font:          xft:JetBrainsMonoNL NFM:size=12
-! URxvt.font:        xft:JetBrainsMono Nerd Font Mono:size=15
+! --- CONFIGURACIÓN DE FUENTES (COMENTADAS) ---
+! Para usar estas fuentes, descomenta la línea correspondiente y aplica con `xrdb -merge ~/.Xresources
+! pixelsize: pixelsize define el tamaño de la fuente en píxeles absolutos.
+! size: size define el tamaño de la fuente en puntos (pt), que es una medida relativa a la resolución de la pantalla.
+
+! *.font: xft:Mononoki Nerd Font Mono::pixelsize=14
+! *.font: xft:Mononoki Nerd Font Mono:pixelsize=14
+! *.font: xft:Mononoki Nerd Font:pixelsize=14
+! *.font: xft:Mononoki Nerd Font:pixelsize=14
+! *.font: xft:SauceCodePro NF Black:pixelsize=14
+! *.font: xft:SauceCodePro NF:pixelsize=14
+! *.font: xft:Hack Nerd Font:pixelsize=14
+! *.font: xft:Hack Nerd Font:pixelsize=14
+! *.font: xft:NotoSans NF:pixelsize=14
+! *.font: xft:NotoSans NF:pixelsize=14
+! *.font: xft:Iosevka NF:pixelsize=14
+! *.font: xft:JetBrainsMonoNL NF:pixelsize=14
+! *.font: xft:JetBrainsMono NF:pixelsize=14
+! *.font: xft:BitstromWera Nerd Font:pixelsize=14
+! *.font: xft:BitstromWera Nerd Font Mono:pixelsize=14
+! *.font: xft:FiraCode Nerd Font:pixelsize=14
 
 
 ! Allow mouse scrolling
