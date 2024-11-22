@@ -1,160 +1,160 @@
 #
-# wm independent hotkeys
+# Atajos Independientes del Gestor de Ventanas
 #
 
-# terminal emulator
+# Terminal
 F1
 	urxvt
-	
-# program launcher
-# super + d
-#	dmenu_run
 
+# Lanzador de Aplicaciones
 F3
     rofi -show drun -show-icons
 
-# make sxhkd reload its configuration files:
+# Recargar configuración de sxhkd
 super + Escape
 	pkill -USR1 -x sxhkd
 
 #
-# bspwm hotkeys
+# Atajos de bspwm
 #
 
-# quit/restart bspwm
-super + alt + {q,r}
+# Salir o reiniciar bspwm
+super + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
+# Cerrar/Kill ventana
 super + {_,shift + }w
 	bspc node -{c,k}
 
-# alternate between the tiled and monocle layout
+# Alternar entre layouts en mosaico y monocle
 super + m
 	bspc desktop -l next
 
-# send the newest marked node to the newest preselected node
+# Enviar el nodo marcado más reciente al nodo preseleccionado más reciente
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
-# swap the current node and the biggest window
+# Intercambiar el nodo actual con la ventana más grande
 super + g
 	bspc node -s biggest.window
 
 #
-# state/flags
+# Estado/Flags de las ventanas
 #
 
-# set the window state
+# Configurar el estado de la ventana
 super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-# set the node flags
+# Configurar flags del nodo
 super + ctrl + {m,x,y,z}
 	bspc node -g {marked,locked,sticky,private}
 
 #
-# focus/swap
+# Foco/Intercambio
 #
 
-# focus the node in the given direction
+# Enfocar nodo en una dirección específica
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
-# focus the node for the given path jump
+# Enfocar nodo por salto de camino
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
-# focus the next/previous window in the current desktop
+# Enfocar la ventana siguiente/anterior en el escritorio actual
 super + {_,shift + }c
 	bspc node -f {next,prev}.local.!hidden.window
 
-# focus the next/previous desktop in the current monitor
+# Enfocar el escritorio siguiente/anterior en el monitor actual
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
-# focus the last node/desktop
+# Enfocar el último nodo/escritorio
 super + {grave,Tab}
 	bspc {node,desktop} -f last
 
-# focus the older or newer node in the focus history
+# Enfocar nodo anterior o siguiente en el historial de enfoque
 super + {o,i}
 	bspc wm -h off; \
 	bspc node {older,newer} -f; \
 	bspc wm -h on
 
-# focus or send to the given desktop
+# Enfocar o enviar al escritorio específico
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 #
-# preselect
+# Preselección
 #
 
-# preselect the direction
+# Preseleccionar dirección
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
-# preselect the ratio
+# Preseleccionar ratio
 super + ctrl + {1-9}
 	bspc node -o 0.{1-9}
 
-# cancel the preselection for the focused node
+# Cancelar preselección del nodo enfocado
 super + ctrl + space
 	bspc node -p cancel
 
-# cancel the preselection for the focused desktop
+# Cancelar preselección del escritorio enfocado
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 #
-# move/resize
+# Mover/Redimensionar
 #
 
-# expand a window by moving one of its side outward
+# Expandir ventana moviendo un lado hacia afuera
 super + alt + {h,j,k,l}
 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
-# contract a window by moving one of its side inward
+# Contraer ventana moviendo un lado hacia adentro
 super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
-# move a floating window
+# Mover ventana flotante
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
 
-# close window
+# Cerrar ventana
 F12
     bspc node -c
-    
-# Toggle beetwen floating & tiled
+
+# Alternar entre ventana flotante y en mosaico
 super + space
     bspc node -t "~"{floating,tiled}
-    
-##---------- WALLPAPERS ----------##
 
-# Cambiar el wallpaper con teclas
-super + F12 
+#
+# Cambiar Wallpaper
+#
+
+# Cambiar el wallpaper al azar
+ctrl + F12 
 	exec feh --randomize --bg-fill ~/.config/wallpapers/*
-	
-##---------- Rofi Launcher & Menus ----------##
 
-# Rofi App Launcher
+#
+# Menús y Lanzadores de Rofi
+#
+
+# Lanzador de aplicaciones con Rofi
 alt + F1
 	sh ~/.config/bspwm/rofi/bin/launcher
 
-# Rofi Network Menu
+# Menú de red con Rofi
 super + n
 	nmd
 
-# Rofi Menus
+# Menús de Rofi
 super + {w,m,x,r}
 	sh ~/.config/bspwm/rofi/bin/{windows,mpd,powermenu,asroot}
 
 ctrl + alt + {s,n,t}
 	sh ~/.config/bspwm/rofi/bin/{screenshot,network,themes}
 
-# Send to desktop
-super + shift + {1-9,0}
-    bspc node -d '^{1-9,10}' --follow
-
+# Enviar ventana al escritorio específico
+super + shift + {1-7}
+    bspc node -d '^{1-7}' --follow
