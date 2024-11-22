@@ -105,30 +105,15 @@ pacman -S --noconfirm --needed ntfs-3g unzip p7zip
 # -----------------------------
 # Instalación y configuración de Bluetooth
 # -----------------------------
-echo "Instalando y configurando Bluetooth..."
+# echo "Instalando y configurando Bluetooth..."
 
 # Instalación de paquetes necesarios
-pacman -S --noconfirm --needed bluez bluez-utils
-
-# Asegurarse de que el módulo btusb esté cargado
-if ! lsmod | grep -q btusb; then
-    modprobe btusb
-fi
+# pacman -S --noconfirm --needed bluez bluez-utils
 
 # Habilitar e iniciar el servicio bluetooth
-systemctl enable bluetooth.service
-systemctl start bluetooth.service
+# systemctl enable bluetooth.service
+# systemctl start bluetooth.service
 
-# Esperar a que el servicio de Bluetooth se inicie correctamente
-while ! systemctl is-active --quiet bluetooth.service; do
-    echo "Esperando a que el servicio Bluetooth se inicie..."
-    sleep 1
-done
-
-# Encender el adaptador Bluetooth, activar el agente y configurarlo como agente predeterminado
-echo -e "power on\nagent on\ndefault-agent\nquit\n" | bluetoothctl
-
-echo "Bluetooth configurado correctamente."
 # -----------------------------
 # Configuración del teclado para X11 (ES)
 # -----------------------------
@@ -186,7 +171,7 @@ chown $USERNAME:$USERNAME /home/$USERNAME/.xinitrc
 # Clonación de dotfiles de XMonad desde GitHub
 # -----------------------------
 echo "Clonando dotfiles desde GitHub..."
-git clone https://github.com/kio-grnd/Arch.git /tmp/arch
+git clone https://github.com/vetealdiablo/Arch.git /tmp/arch
 
 echo "Copiando dotfiles a /home/$USERNAME..."
 cp -r /tmp/arch/xmonad/* /tmp/arch/xmonad/.[!.]* /home/$USERNAME/

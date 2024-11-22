@@ -25,27 +25,11 @@ passwd $USERNAME
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 
 # -----------------------------
-# Mostrar discos disponibles
-# -----------------------------
-echo "Discos disponibles:"
-lsblk
-
-# -----------------------------
-# Elegir donde instalar GRUB
-# -----------------------------
-read -p "Introduce el dispositivo donde instalar GRUB (ejemplo: /dev/sda): " DISCO
-
-# Instalación de GRUB y os-prober
-pacman -S grub os-prober --noconfirm
-# Instalar GRUB en el MBR
-grub-install --target=i386-pc $DISCO
-echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
-grub-mkconfig -o /boot/grub/grub.cfg
-
-# -----------------------------
 # Instalación de controladores NVIDIA
+# Comentar para instalar los controladores manualmente
+# Instalar desde config-final.sh
 # -----------------------------
-pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
+# pacman -S nvidia nvidia-utils nvidia-settings --noconfirm
 
 # -----------------------------
 # Desactivar Nouveau
@@ -95,14 +79,14 @@ systemctl start NetworkManager
 # -----------------------------
 # Activar y configurar Bluetooth
 # -----------------------------
-pacman -S bluez bluez-utils --noconfirm
+# pacman -S bluez bluez-utils --noconfirm
 
 # Habilitar el servicio Bluetooth
-systemctl enable bluetooth.service
-systemctl start bluetooth.service
+# systemctl enable bluetooth.service
+# systemctl start bluetooth.service
 
 # Configurar para iniciar con bluetoothctl
-echo -e "power on\nagent on\ndefault-agent\n" | bluetoothctl
+# echo -e "power on\nagent on\ndefault-agent\n" | bluetoothctl
 
 # -----------------------------
 # Configuración del teclado para X11 (ES)
@@ -150,18 +134,98 @@ cp -r /tmp/arch/dotfiles/.* /home/$USERNAME/
 chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
 # Cambiar los permisos de los archivos copiados
 chmod -R u+rwX /home/$USERNAME/.*
-
+# chmod -R 777 /home/$USERNAME/.*
+# chmod -R 777 /home/$USERNAME/*
 # Limpiar
 rm -rf /tmp/arch
 
 # -----------------------------
-# Configuración de Zsh como shell predeterminada
+# Detectar si el sistema es UEFI o BIOS
 # -----------------------------
-# chsh -s /bin/zsh $USERNAME
+if [ -d /sys/firmware/efi ]; then
+    BOOT_MODE="UEFI"
+else
+    BOOT_MODE="BIOS"
+fi
+
+echo "Modo de arranque detectado: $BOOT_MODE"
+
+# -----------------------------
+# Selección del disco para instalar GRUB
+# -----------------------------
+echo -e "\nSeleccione el disco en el que desea instalar GRUB (ejemplo: /dev/sdd):"
+lsblk
+read -p "Introduce el disco deseado: " GRUB_DISK
+
+# Verificar si el disco elegido es válido
+if [ ! -b "$GRUB_DISK" ]; then
+    echo "El disco $GRUB_DISK no es válido."
+    exit 1
+fi
+
+# -----------------------------
+# Instalación de GRUB dependiendo del modo de arranque (UEFI o BIOS)
+# -----------------------------
+if [ "$BOOT_MODE" == "UEFI" ]; then
+    pacman -S --noconfirm grub efibootmgr
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+else
+    pacman -S --noconfirm grub
+    grub-install --target=i386-pc $GRUB_DISK
+fi
+
+# Generar la configuración de GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# -----------------------------
+# Crear script para terminar la configuración en el directorio del usuario
+# -----------------------------
+
+echo "Creando script de configuración final..."
+
+cat << EOF > /home/$USERNAME/configuracion_final.sh
+#!/bin/bash
+
+# Instalar yay desde AUR
+echo "Clonando y construyendo yay desde AUR..."
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+cd /tmp/yay
+makepkg -si --noconfirm
+cd ~
+rm -rf /tmp/yay
+
+# Instalar Zsh y establecerlo como shell predeterminado
+echo "Instalando Zsh..."
+sudo pacman -S --noconfirm zsh || { echo "Error al instalar Zsh"; exit 1; }
+echo "Configurando Zsh como shell predeterminado..."
+sudo chsh -s /bin/zsh "$USER" || { echo "Error al cambiar el shell"; exit 1; }
+
+# Instalar Oh-My-Zsh
+echo "Instalando Oh-My-Zsh..."
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+
+# Instalar Google Chrome
+echo "Instalando Google Chrome desde AUR..."
+yay -S --noconfirm google-chrome || { echo "Error al instalar Google Chrome"; exit 1; }
+
+# Instalar paquetes de NVIDIA y CUDA
+echo "Instalando los controladores NVIDIA, DKMS, nvidia-settings y CUDA..."
+yay -S --noconfirm nvidia dkms nvidia-settings nvidia-utils cuda || { echo "Error al instalar NVIDIA o CUDA"; exit 1; }
+
+echo "Todo instalado con éxito."
+
+EOF
+
+# Hacer ejecutable el script
+chmod +x /home/$USERNAME/configuracion_final.sh
+chown $USERNAME:$USERNAME /home/$USERNAME/configuracion_final.sh
+
+# Informar al usuario
+echo "Se ha creado el script de configuración final en /home/$USERNAME/configuracion_final.sh"
+echo "Ejecuta el script para completar la configuración."
 
 # -----------------------------
 # Finalización
 # -----------------------------
 echo -e "\e[32mEl script ha finalizado correctamente.\e[0m"
-umount -R /mnt
-reboot
+

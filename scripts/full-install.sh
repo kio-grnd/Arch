@@ -42,7 +42,7 @@ cat << EOF > /mnt/setup_choice.sh
 
 # Asegurarse de que el repositorio solo se clone una vez
 echo "Clonando el repositorio..."
-git clone https://github.com/kio-grnd/Arch /tmp/arch-scripts
+git clone https://github.com/vetealdiablo/Arch /tmp/arch-scripts
 
 # Elegir entorno de escritorio
 echo -e "\n¿Qué entorno de escritorio deseas instalar?"
